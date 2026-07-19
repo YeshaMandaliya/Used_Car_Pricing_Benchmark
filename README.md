@@ -27,7 +27,7 @@ Consistency and speed are expected process benefits. They were not measured in t
 
 A benchmark should clear a credible alternative. The comparison method already used model, age and mileage where support allowed, with structured fallbacks otherwise. Both methods were evaluated on the same 19,433 test listings.
 
-![Benchmark performance compared with hierarchical comparable prices](images/benchmark_vs_comparables.png)
+![Benchmark performance compared with hierarchical comparable prices](benchmark_vs_comparables.png)
 
 Here, **typical error** means median absolute percentage error (MdAPE): the median absolute percentage difference between predicted and observed listed price. **Average error** means mean absolute error (MAE), expressed in pounds.
 
@@ -48,7 +48,7 @@ Adding mileage to the comparable hierarchy had already reduced MdAPE from 11.54%
 
 The raw median diesel listing is approximately **£5,000 higher** than the raw median petrol listing. Taken alone, that could be mistaken for a diesel premium. After holding model, age, mileage, engine size and transmission constant, diesel is instead associated with a **6.59% lower advertised price** than petrol.
 
-![Raw fuel medians compared with like for like fuel relationships](images/diesel_reversal.png)
+![Raw fuel medians compared with like for like fuel relationships](diesel_reversal.png)
 
 The sign reversal reflects portfolio composition. The mix of models, ages, mileage levels, engine sizes and transmissions within diesel listings creates the raw gap, rather than a standalone diesel premium.
 
@@ -66,7 +66,7 @@ These are conditional advertised price associations already incorporated into th
 
 A fixed annual reduction followed by a fixed currency deduction per 10,000 miles misses the nonlinear and proportional relationships in this dataset. The benchmark estimates age and mileage simultaneously and combines their effects multiplicatively on the advertised price scale.
 
-![Supported age and mileage advertised price index](images/age_mileage_price_index.png)
+![Supported age and mileage advertised price index](age_mileage_price_index.png)
 
 A vehicle that is five years old with 60,000 miles has an adjusted advertised price index of approximately **54**, relative to the supported reference of a vehicle that is one year old with 10,000 miles.
 
@@ -78,7 +78,7 @@ Blank cells have fewer than 25 training fingerprints and should not be used as s
 
 Differences between brands appear clearly in this dataset, but they are too broad for pricing individual vehicles. Mercedes-Benz has a conditional price index of approximately **132** against a portfolio reference of 100, while Vauxhall sits at **74**. Selected model indices range much more widely.
 
-![Manufacturer and selected model conditional price indices](images/model_vs_brand_positioning.png)
+![Manufacturer and selected model conditional price indices](model_vs_brand_positioning.png)
 
 A blanket brand adjustment would obscure differences between models that are often larger than the gaps between brand averages.
 
@@ -88,7 +88,7 @@ A blanket brand adjustment would obscure differences between models that are oft
 
 Not every vehicle receives the same level of confidence. The benchmark routes each listing to an appropriate level of human involvement.
 
-![Share of listings and listed price value by guidance tier](images/guidance_tiers.png)
+![Share of listings and listed price value by guidance tier](guidance_tiers.png)
 
 | Tier | Portfolio sizing | What it covers | What the team receives |
 |---|---|---|---|
