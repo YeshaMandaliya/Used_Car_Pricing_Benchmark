@@ -138,7 +138,9 @@ A random row split could place the same recorded specification on both sides of 
 | Complete test population used for regression | **19,433** | **19,125** |
 | Fingerprints shared across train and test | Not applicable | **0** |
 
-Comparable medians, category pooling, model transformations and smearing corrections were estimated from training data only. The test population was used for final model comparison and diagnostics, not for choosing record level parameters.
+Comparable medians, category pooling, model transformations and smearing corrections were estimated from training data only. The held-out population was used to compare the prespecified transparent regression options and to report performance diagnostics.
+
+Because A2 was selected after comparing A1, A2 and A3 on this held-out population, the reported figures are honest results on unseen records, but they are not a completely untouched final implementation test. A live pilot should be checked again on new company data or on a later time period before the figures are treated as expected operational performance.
 
 ## 5. Reference year decision
 
@@ -318,7 +320,7 @@ The £30,000 review trigger was rejected because vehicles with predicted prices 
 
 ## 10. Guidance tiers
 
-The operating tiers follow the validation evidence rather than intuition.
+The operating tiers follow the validation evidence rather than intuition. They are proposed review levels for a shadow pilot, not evidence that the business has already saved time or improved commercial outcomes.
 
 | Tier | Listings | Share of listings | Share of aggregate listed price value |
 |---|---:|---:|---:|
@@ -327,11 +329,61 @@ The operating tiers follow the validation evidence rather than intuition.
 | Manual appraisal | 3,355 | 3.43% | 5.25% |
 | **Total** | **97,673** | **100.00%** | **100.00%** |
 
-Routing logic:
+The **20.99%** outside standard guidance is the sum of cautious review and manual appraisal:
 
-* **Tier 1, standard guidance:** age up to 5 years, mileage below 60,000, supported model and fuel category, complete required inputs and predicted benchmark below £50,000.
-* **Tier 2, cautious review:** age from 6 to 10 years, mileage from 60,000 to 99,999, or thinner comparable support, provided no Tier 3 condition applies.
-* **Tier 3, manual appraisal:** age 11 years or older, mileage of at least 100,000, missing or unclear required inputs, unsupported electric records, or a predicted benchmark of at least £50,000.
+```text
+17.56% cautious review + 3.43% manual appraisal = 20.99%, rounded to 21%
+```
+
+This does not mean the benchmark is wrong for 21% of vehicles. It means those listings have characteristics associated with weaker historical coverage or greater financial exposure, so they receive more human review.
+
+The value shares are calculated from the sum of advertised prices in each historical group. They are not revenue, profit, inventory cost or completed sale value.
+
+### Routing order
+
+The analyst does not choose a tier manually. After the required vehicle information is entered, the proposed scoring process applies the following rules in order.
+
+#### 1. Check for manual appraisal
+
+A vehicle routes to manual appraisal if any of the following apply:
+
+* It is 11 years or older.
+* It has at least 100,000 miles.
+* Its predicted benchmark price is at least £50,000.
+* It is electric, because only six electric records are available.
+* A required input is missing or unclear.
+* Historical support is not reliable enough for direct guidance.
+
+#### 2. Check for cautious review
+
+If no manual appraisal condition applies, a vehicle routes to cautious review if any of the following apply:
+
+* It is between 6 and 10 years old.
+* It has between 60,000 and 99,999 miles.
+* Its model or comparable group has limited historical support.
+
+#### 3. Assign standard guidance
+
+A vehicle receives standard guidance only if all of the following apply:
+
+* It is no more than 5 years old.
+* It has fewer than 60,000 miles.
+* All required inputs are available.
+* Its model and fuel category have enough historical support.
+* Its predicted benchmark price is below £50,000.
+* No cautious review or manual appraisal condition applies.
+
+When more than one condition applies, the tier requiring more review takes priority:
+
+> **Manual appraisal takes priority over cautious review. Cautious review takes priority over standard guidance.**
+
+Historical support is calculated from the training data and should be stored with the prediction. It is a system check, not a judgement the analyst is expected to make while pricing a vehicle.
+
+The resulting historical tier definitions are therefore:
+
+* **Tier 1, standard guidance:** routine vehicles with strong support that pass every standard guidance condition.
+* **Tier 2, cautious review:** vehicles with moderately weaker coverage that do not meet a manual appraisal condition.
+* **Tier 3, manual appraisal:** vehicles with poor coverage, missing information, unsupported electric records or high expected prices.
 
 All **1,020** records with predicted benchmark prices of £50,000 or more route to Tier 3.
 
@@ -342,6 +394,8 @@ Operating ranges:
 * Tier 3 receives no calibrated benchmark range.
 
 These are global ranges. They do not guarantee nominal coverage within every tier or segment.
+
+The tier shares describe this historical portfolio. A real dealer may have a different mix of vehicles, so the expected workload should be measured again during the shadow pilot.
 
 ### Support for the age and mileage price book
 
