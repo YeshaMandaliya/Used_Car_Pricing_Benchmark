@@ -38,7 +38,7 @@ Think of it as a consistent second opinion. It helps with routine vehicles and t
 
 The benchmark was tested on **19,433 listings that were not used to build it**. It was compared with a strong method based on similar vehicles, using vehicle model, age and mileage wherever enough comparisons were available.
 
-![Benchmark performance compared with hierarchical comparable prices](benchmark_vs_comparables.png)
+![Benchmark performance compared with hierarchical comparable prices](images/benchmark_vs_comparables.png)
 
 | Test result | Comparable price method | Pricing benchmark |
 |---|---:|---:|
@@ -55,33 +55,81 @@ The £742 difference in average error is **not money saved**. It only shows that
 
 The benchmark should not be trusted equally for every car. The analysis therefore separates the portfolio into three groups.
 
-![Share of listings and listed price value by guidance tier](guidance_tiers.png)
+![Share of listings and listed price value by guidance tier](images/guidance_tiers.png)
 
-| Guidance group | Share of listings | How the team should use it |
+The analyst does not choose the group manually. After the vehicle information is entered, the system applies the routing rules and displays the required level of review.
+
+### First, check for manual appraisal
+
+A vehicle goes to manual appraisal if **any** of these conditions apply:
+
+* It is 11 years or older.
+* It has at least 100,000 miles.
+* Its expected benchmark price is £50,000 or more.
+* It is electric, because the dataset contains only six electric records.
+* Important information is missing or unclear.
+* The benchmark does not have reliable support for the vehicle.
+
+These vehicles should be priced by a specialist. The benchmark is background information only.
+
+### Second, check for cautious review
+
+If no manual appraisal condition applies, a vehicle goes to cautious review if **any** of these conditions apply:
+
+* It is between 6 and 10 years old.
+* It has between 60,000 and 99,999 miles.
+* The model or comparable group has limited historical support.
+
+The benchmark can still be shown, but a pricing analyst must review the vehicle more carefully.
+
+### Finally, assign standard guidance
+
+A vehicle receives standard guidance only when **all** of these conditions apply:
+
+* It is no more than 5 years old.
+* It has fewer than 60,000 miles.
+* All required information is available.
+* Its fuel type and vehicle model are supported by enough historical examples.
+* Its expected benchmark price is below £50,000.
+* No cautious review or manual appraisal condition applies.
+
+The system checks historical support automatically. The analyst does not have to decide whether there are enough examples. Strong support means the model has enough historical observations to receive direct guidance rather than relying mainly on a broader fallback group.
+
+If a vehicle meets rules from more than one group, the group requiring more review wins:
+
+> **Manual appraisal takes priority over cautious review. Cautious review takes priority over standard guidance.**
+
+For example:
+
+* A three year old car with 120,000 miles goes to manual appraisal because of its mileage.
+* A seven year old car with 30,000 miles goes to cautious review because of its age.
+* A two year old car with 20,000 miles and an expected price of £60,000 goes to manual appraisal because of its expected price.
+* A four year old car with 35,000 miles, complete information and strong model support receives standard guidance.
+
+### How each group is used during shadow mode
+
+| Guidance group | Historical share of listings | How the team should use it during the pilot |
 |---|---:|---|
-| **Standard guidance** | 79.00% | Use the benchmark as the main starting point. Show a comparable estimate as a cross check. A person confirms the final price. |
-| **Cautious review** | 17.56% | Show the same information, but require a more careful analyst review because the vehicle is older, has more mileage or has fewer useful comparisons. |
+| **Standard guidance** | 79.00% | Show the benchmark beside the analyst’s normal price. Do not change the real asking price. Record whether the analyst agrees. |
+| **Cautious review** | 17.56% | Show the benchmark, flag the vehicle for closer review and record the analyst’s decision and reason. |
 | **Manual appraisal** | 3.43% | Send the vehicle to a specialist. Use the benchmark only as background information. |
 
-Standard guidance covers **80.32% of total listed price value**. Manual appraisal covers only **3.43% of listings**, but **5.25% of listed price value**.
+The percentages come from applying these rules to the 97,673 historical listings. A real dealer’s portfolio may have a different mix.
 
-That difference is deliberate. Every vehicle with an estimated benchmark price of at least £50,000 is sent to manual appraisal because even a small percentage error can create a large difference in pounds.
+Standard guidance covers **80.32% of the total advertised price amount represented in the dataset**. Manual appraisal covers only **3.43% of listings**, but **5.25% of the total advertised price amount**.
 
-Manual appraisal also includes:
+This is not revenue, profit, inventory cost or completed sale value. It is the sum of the advertised prices in each historical group.
 
-* Vehicles that are 11 years or older
-* Vehicles with at least 100,000 miles
-* Vehicles with missing or unclear information
-* Electric vehicles, because the dataset contains too few of them
+The larger share for manual appraisal is deliberate. Every vehicle with an expected benchmark price of at least £50,000 is sent to this group because even a small percentage error can create a large difference in pounds.
 
-This routing system is the main business recommendation. It gives routine cars a consistent starting point and concentrates expert attention on the vehicles where mistakes are more likely or more expensive.
+This routing system is the main business recommendation. It gives routine cars a consistent reference and concentrates expert attention on the vehicles where mistakes are more likely or more expensive.
 
 ## What the pricing team should do for each new vehicle
 
 1. Record the vehicle model, year, mileage, engine size, fuel type and transmission.
 2. Produce the benchmark estimate.
 3. Produce a separate comparable price estimate.
-4. Assign the vehicle to standard guidance, cautious review or manual appraisal.
+4. Let the system assign standard guidance, cautious review or manual appraisal.
 5. Let the pricing analyst choose the final asking price.
 6. If the analyst disagrees with the benchmark, record the size and reason for the difference.
 
@@ -93,17 +141,17 @@ The override record is important. It captures business information that is missi
 
 These rules are not new discoveries for an experienced pricing manager. Their value is that the analysis measures them and builds them into a consistent process.
 
-### Rule 1: compare like with like
+### Rule 1: compare similar vehicles, not broad averages
 
 The raw median diesel listing is about **£5,000 more expensive** than the raw median petrol listing. This could easily be mistaken for a diesel premium.
 
-After comparing similar vehicles with the same recorded model, age, mileage, engine size and transmission, diesel is instead associated with a **6.59% lower advertised price** than petrol.
+When the analysis accounts for vehicle model, age, mileage, engine size and transmission, diesel is instead associated with a **6.59% lower advertised price** than petrol.
 
-![Raw fuel medians compared with like for like fuel relationships](diesel_reversal.png)
+![Raw fuel medians compared with like for like fuel relationships](images/diesel_reversal.png)
 
 The raw difference is mainly caused by the mix of vehicles. Diesel listings include more large and expensive models.
 
-**Practical rule:** do not create pricing adjustments from raw averages. Compare vehicles with similar features.
+**Practical rule:** do not create pricing adjustments from broad averages. Compare vehicles with similar recorded features.
 
 The 6.59% result should not be used as a fixed diesel discount in a live business. It describes this historical dataset and would need to be checked again using current company data.
 
@@ -111,7 +159,7 @@ The 6.59% result should not be used as a fixed diesel discount in a live busines
 
 A simple rule such as “subtract the same amount for every year and every 10,000 miles” is too crude. The price difference changes as cars become older and accumulate more mileage.
 
-![Supported age and mileage advertised price index](age_mileage_price_index.png)
+![Supported age and mileage advertised price index](images/age_mileage_price_index.png)
 
 The reference vehicle in the chart is one year old with 10,000 miles and has an index of 100. A vehicle that is five years old with 60,000 miles has an index of about 54 after the other recorded features are held constant.
 
@@ -123,7 +171,7 @@ Blank cells have too few similar vehicles to support a standalone answer. Dashed
 
 Brand level differences exist, but they are too broad for pricing an individual car. Mercedes-Benz has an adjusted index of about 132 against a portfolio reference of 100, while Vauxhall has an index of about 74. Individual vehicle models vary much more widely.
 
-![Manufacturer and selected model conditional price indices](model_vs_brand_positioning.png)
+![Manufacturer and selected model conditional price indices](images/model_vs_brand_positioning.png)
 
 An index of 132 means the adjusted advertised price is about 32% above the portfolio reference. It is not a markup to add to a car.
 
