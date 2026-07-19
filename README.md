@@ -38,7 +38,7 @@ Think of it as a consistent second opinion. It helps with routine vehicles and t
 
 The benchmark was tested on **19,433 listings that were not used to build it**. It was compared with a strong method based on similar vehicles, using vehicle model, age and mileage wherever enough comparisons were available.
 
-![Benchmark performance compared with hierarchical comparable prices](images/benchmark_vs_comparables.png)
+![Benchmark performance compared with hierarchical comparable prices](benchmark_vs_comparables.png)
 
 | Test result | Comparable price method | Pricing benchmark |
 |---|---:|---:|
@@ -55,7 +55,7 @@ The £742 difference in average error is **not money saved**. It only shows that
 
 The benchmark should not be trusted equally for every car. The analysis therefore separates the portfolio into three groups.
 
-![Share of listings and listed price value by guidance tier](images/guidance_tiers.png)
+![Share of listings and listed price value by guidance tier](guidance_tiers.png)
 
 The analyst does not choose the group manually. After the vehicle information is entered, the system applies the routing rules and displays the required level of review.
 
@@ -147,7 +147,7 @@ The raw median diesel listing is about **£5,000 more expensive** than the raw m
 
 When the analysis accounts for vehicle model, age, mileage, engine size and transmission, diesel is instead associated with a **6.59% lower advertised price** than petrol.
 
-![Raw fuel medians compared with like for like fuel relationships](images/diesel_reversal.png)
+![Raw fuel medians compared with like for like fuel relationships](diesel_reversal.png)
 
 The raw difference is mainly caused by the mix of vehicles. Diesel listings include more large and expensive models.
 
@@ -159,7 +159,7 @@ The 6.59% result should not be used as a fixed diesel discount in a live busines
 
 A simple rule such as “subtract the same amount for every year and every 10,000 miles” is too crude. The price difference changes as cars become older and accumulate more mileage.
 
-![Supported age and mileage advertised price index](images/age_mileage_price_index.png)
+![Supported age and mileage advertised price index](age_mileage_price_index.png)
 
 The reference vehicle in the chart is one year old with 10,000 miles and has an index of 100. A vehicle that is five years old with 60,000 miles has an index of about 54 after the other recorded features are held constant.
 
@@ -171,7 +171,7 @@ Blank cells have too few similar vehicles to support a standalone answer. Dashed
 
 Brand level differences exist, but they are too broad for pricing an individual car. Mercedes-Benz has an adjusted index of about 132 against a portfolio reference of 100, while Vauxhall has an index of about 74. Individual vehicle models vary much more widely.
 
-![Manufacturer and selected model conditional price indices](images/model_vs_brand_positioning.png)
+![Manufacturer and selected model conditional price indices](model_vs_brand_positioning.png)
 
 An index of 132 means the adjusted advertised price is about 32% above the portfolio reference. It is not a markup to add to a car.
 
