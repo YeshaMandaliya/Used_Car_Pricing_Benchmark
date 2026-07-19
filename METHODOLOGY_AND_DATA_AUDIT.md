@@ -1,6 +1,6 @@
 # Methodology and Data Audit
 
-How the used vehicle advertised price benchmark was framed, audited, built and tested.
+How the used-vehicle advertised-price benchmark was framed, audited, built and tested.
 
 This document is for reviewers, hiring managers and future maintainers checking the work. The business recommendation lives in [README.md](README.md). The principle throughout was simple: a claim did not enter the report until the data had earned it.
 
@@ -15,7 +15,7 @@ The project followed six sequential stages:
 
 ## 1. Provenance: why the first dataset was rejected
 
-The project initially considered a different Kaggle car sales dataset containing 50,000 rows. Its source name identified it as a mock second hand car dataset, and its structure showed several warning signs of synthetic data:
+The project initially considered a different Kaggle car-sales dataset containing 50,000 rows. Its source name identified it as a mock second-hand car dataset, and its structure showed several warning signs of synthetic data:
 
 * Only five manufacturers and fifteen models.
 * Suspiciously complete and regular fields.
@@ -63,12 +63,12 @@ Two structural inconsistencies were standardized:
 | Starting rows across nine manufacturer files | Not applicable | 99,187 |
 | Excess exact duplicate rows | 1,475 | 97,712 |
 | Impossible model years: two at 1970 and one at 2060 | 3 | 97,709 |
-| Unreliable Mercedes-Benz A Class model labels | 32 | 97,677 |
+| Unreliable Mercedes-Benz `A Class` model labels | 32 | 97,677 |
 | Corrupt price records | 4 | **97,673** |
 
 ### Unreliable model labels
 
-The 32 excluded A Class records carried 4.0 litre engines and prices from approximately £58,000 to £140,000, sharply inconsistent with the surrounding A Class observations. They were treated as unreliable model labels rather than as valid A Class price evidence.
+The 32 excluded records labelled `A Class` carried 4.0-litre engines and prices from approximately £58,000 to £140,000, sharply inconsistent with the surrounding observations carrying that label. They were treated as unreliable model labels rather than as valid `A Class` price evidence.
 
 This is a narrow exclusion affecting approximately 0.03% of the data after exact duplicates were removed. It does not materially determine the portfolio results, but leaving the labels unchanged would contaminate interpretation by model.
 
@@ -101,7 +101,7 @@ The final analytical population contains:
 
 * **97,673 records** representing 99,148 source rows after duplicate weights are considered.
 * **9 manufacturers**.
-* **195 manufacturer and model combinations**.
+* **195 manufacturer-model combinations**.
 * Model years from **1996 to 2020**.
 * Prices from **£450 to £159,999**.
 
@@ -246,7 +246,7 @@ A3 expresses mileage as the amount above or below the typical level for a vehicl
 
 B1 performs materially worse and produces **129 negative price predictions** on the test population, which are operationally invalid. Log price better matches the proportional error objective and guarantees positive predictions after conversion back to pounds.
 
-No tree ensemble or other black box model was introduced. The project objective is transparent pricing analysis, and additional complexity was required to earn an operational role.
+No tree ensemble or other black-box model was introduced. The project objective is transparent pricing analysis, and additional complexity was required to earn an operational role.
 
 ## 9. Test performance and uncertainty
 
@@ -273,13 +273,13 @@ The £741.90 reduction in MAE is rounded to **£742 of benchmark error per listi
 | £10k to £20k | 7.45% | 92.19% | Strong core performance |
 | £20k to £30k | 7.17% | 92.13% | Strong core performance |
 | £30k to £50k | 9.16% | 87.76% | Weaker segment in absolute price terms |
-| £50k and above | 11.03% | 80.60% | Review required for high value vehicles |
+| £50k and above | 11.03% | 80.60% | Review required for high-value vehicles |
 | Age 0 to 2 years | 7.82% | 90.93% | Strong |
 | Age 3 to 5 years | 7.33% | 91.59% | Strong |
 | Age 6 to 10 years | 9.60% | 84.10% | Weaker |
 | Age 11+ years | 16.85% | 57.63% | Not suitable for standard guidance |
 
-These price band diagnostics use observed listed price and therefore cannot be used directly as routing rules before a vehicle is listed.
+These price-band diagnostics use observed listed price and therefore cannot be used directly as routing rules before a vehicle is listed.
 
 ### Empirical uncertainty calibration
 
@@ -296,6 +296,8 @@ The complete test population was split again by fingerprint into calibration and
 | 90% | 0.82× to 1.21× | 89.28% | 90% |
 | 95% | 0.79× to 1.26× | 94.19% | 95% |
 
+These ranges were calibrated within the same held-out population used for specification comparison. Their coverage figures therefore carry the model-selection caveat described in Section 4 and should be checked again on new data before operational use.
+
 Coverage varies materially by segment:
 
 | Validation segment | 90% range coverage | Assessment |
@@ -308,7 +310,7 @@ Coverage varies materially by segment:
 | Age 11+ | 55.17% | Not credible for standard guidance |
 | 100,000+ miles | 65.33% | Not credible for standard guidance |
 
-Observed listed price bands also showed weaker coverage above £30,000, but observed price is unavailable when guiding a new listing. Deployment was therefore checked using predicted price bands:
+Observed listed-price bands also showed weaker coverage above £30,000, but observed price is unavailable when guiding a new listing. Deployment was therefore checked using predicted-price bands:
 
 | Predicted benchmark band | Validation records | MdAPE | Within ±20% | 90% range coverage |
 |---|---:|---:|---:|---:|
@@ -328,6 +330,8 @@ The operating tiers follow the validation evidence rather than intuition. They a
 | Cautious review | 17,152 | 17.56% | 14.43% |
 | Manual appraisal | 3,355 | 3.43% | 5.25% |
 | **Total** | **97,673** | **100.00%** | **100.00%** |
+
+The displayed tier shares add to 99.99% because each percentage is rounded separately. The total row is calculated from the underlying counts, which cover all 97,673 records.
 
 The **20.99%** outside standard guidance is the sum of cautious review and manual appraisal:
 
@@ -449,7 +453,7 @@ The source data and working analysis environment are not included. The source CS
 
 ### Techniques demonstrated
 
-* Hierarchical comparable medians with minimum support fallbacks.
+* Hierarchical comparable medians with minimum-support fallbacks.
 * Transparent hedonic regression on log price.
 * Piecewise nonlinear age and mileage terms.
 * Duan smearing when converting predictions back to pounds.
