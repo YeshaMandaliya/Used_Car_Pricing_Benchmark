@@ -1,163 +1,233 @@
-# Used Vehicle Pricing: A Benchmark the Team Can Actually Use
+# Used Vehicle Pricing: A Practical Starting Point for the Pricing Team
 
-A commercial pricing case study using **97,673 historical UK used car listings collected through web scraping**. The project is framed around a pricing decision rather than modelling for its own sake.
+This project shows how a used car business could make pricing more consistent without removing human judgement.
 
-> **In this repository:** this page contains the business recommendation. For the data audit, statistical design and validation, read [METHODOLOGY_AND_DATA_AUDIT.md](METHODOLOGY_AND_DATA_AUDIT.md).
+The analysis uses **97,673 historical UK used car listings** across **9 manufacturers and 195 vehicle models**.
 
-**Prepared for:** Pricing Manager and partners in Commercial, Operations and Finance  
-**Data scope:** 97,673 listings, 9 manufacturers and 195 models. Vehicle age uses 2020 as an assumed reference year; model years span from 1996 to 2020.
+> This page explains the business recommendation in simple terms. The full data audit and statistical work are documented in [METHODOLOGY_AND_DATA_AUDIT.md](METHODOLOGY_AND_DATA_AUDIT.md).
+
+## The business problem
+
+When a car enters inventory, someone must choose an asking price.
+
+Different employees may reach different answers because they use different comparable cars, different rules and different levels of experience. Straightforward vehicles can take unnecessary time to price, while unusual or expensive vehicles may not receive enough attention.
+
+The business needs a consistent starting point that answers two questions:
+
+1. What advertised price would be normal for a vehicle with these recorded features?
+2. Is this a routine vehicle, or should an experienced person review it more carefully?
 
 ## The recommendation
 
-Adopt a transparent benchmark for **expected advertised price** and run it in shadow mode before it influences any live price.
+**Pilot a transparent advertised price benchmark in shadow mode.**
 
-On 19,433 listings reserved for testing, the benchmark reduced typical percentage error from **9.61% to 7.77%** relative to a strong comparable price method. That method prioritized model, age and mileage matching whenever the training data contained at least 25 comparable specifications, then used a documented fallback hierarchy for thinner segments. Separately, **79% of the analytical portfolio qualifies for standard guidance reviewed by a person**.
+The benchmark estimates what vehicles with similar recorded features are usually advertised for. It considers:
 
-Think of the benchmark as a copilot rather than an autopilot. It provides a consistent starting point based on the available evidence, while a pricing analyst still sets the final price.
+* Manufacturer and vehicle model
+* Vehicle age
+* Mileage
+* Engine size
+* Fuel type
+* Transmission
 
-It is intended to support three process improvements:
+It does not set the final price. A pricing analyst reviews the evidence and makes the decision.
 
-* **Consistency:** the same recorded attributes produce the same benchmark starting point.
-* **Speed:** 79% of listings can receive immediate standard guidance.
-* **Focus:** analyst attention is routed to the 21% requiring closer review.
+Think of it as a consistent second opinion. It helps with routine vehicles and tells the team when it does not have enough evidence.
 
-Consistency and speed are expected process benefits. They were not measured in this dataset.
+## Why the benchmark is worth testing
 
-## First, the evidence that it improves price benchmarking
-
-A benchmark should clear a credible alternative. The comparison method already used model, age and mileage where support allowed, with structured fallbacks otherwise. Both methods were evaluated on the same 19,433 test listings.
+The benchmark was tested on **19,433 listings that were not used to build it**. It was compared with a strong method based on similar vehicles, using vehicle model, age and mileage wherever enough comparisons were available.
 
 ![Benchmark performance compared with hierarchical comparable prices](benchmark_vs_comparables.png)
 
-Here, **typical error** means median absolute percentage error (MdAPE): the median absolute percentage difference between predicted and observed listed price. **Average error** means mean absolute error (MAE), expressed in pounds.
-
-| Test measure | Comparable price method | Pricing benchmark |
+| Test result | Comparable price method | Pricing benchmark |
 |---|---:|---:|
-| MdAPE | 9.61% | **7.77%** |
-| MAE | £2,355 | **£1,613** |
-| Predictions within ±15% | 67.65% | **80.04%** |
-| Predictions within ±20% | 78.60% | **90.35%** |
+| Typical percentage error | 9.61% | **7.77%** |
+| Average error in pounds | £2,355 | **£1,613** |
+| Estimates within 15% of the listed price | 67.65% | **80.04%** |
+| Estimates within 20% of the listed price | 78.60% | **90.35%** |
 
-Adding mileage to the comparable hierarchy had already reduced MdAPE from 11.54% to 9.61%. The selected benchmark therefore improves on an already strengthened baseline rather than a weak straw man.
+In simple terms, the benchmark gave estimates that were closer to the observed advertised prices than the comparable price method.
 
-**What to do:** use the benchmark as the primary reference and keep the comparable estimate visible beside it. Material disagreement is a prompt to inspect the vehicle, not proof that either method is wrong.
+The £742 difference in average error is **not money saved**. It only shows that the benchmark estimate was closer to the listed price in this historical dataset.
 
-## Three findings that should change how advertised prices are benchmarked
+## The most useful result: decide where people should spend their time
 
-### 1. Raw portfolio medians can point in the wrong direction
-
-The raw median diesel listing is approximately **£5,000 higher** than the raw median petrol listing. Taken alone, that could be mistaken for a diesel premium. After holding model, age, mileage, engine size and transmission constant, diesel is instead associated with a **6.59% lower advertised price** than petrol.
-
-![Raw fuel medians compared with like for like fuel relationships](diesel_reversal.png)
-
-The sign reversal reflects portfolio composition. The mix of models, ages, mileage levels, engine sizes and transmissions within diesel listings creates the raw gap, rather than a standalone diesel premium.
-
-Other conditional relationships in this dataset are:
-
-* Hybrid versus petrol: **+12.66%**.
-* Automatic versus manual: **+10.44%**.
-* Semi automatic versus manual: **+11.82%**.
-
-These are conditional advertised price associations already incorporated into the benchmark. They are not causal effects, estimates of willingness to pay or separate markups to add again.
-
-**What to do:** do not derive pricing adjustments from raw portfolio averages or medians. Use like for like comparisons.
-
-### 2. Age and mileage must be considered together
-
-A fixed annual reduction followed by a fixed currency deduction per 10,000 miles misses the nonlinear and proportional relationships in this dataset. The benchmark estimates age and mileage simultaneously and combines their effects multiplicatively on the advertised price scale.
-
-![Supported age and mileage advertised price index](age_mileage_price_index.png)
-
-A vehicle that is five years old with 60,000 miles has an adjusted advertised price index of approximately **54**, relative to the supported reference of a vehicle that is one year old with 10,000 miles.
-
-Blank cells have fewer than 25 training fingerprints and should not be used as standalone lookup guidance. Dashed cells have between 25 and 99 fingerprints and are directional only. These vehicles require additional analyst review.
-
-**What to do:** use the combined age and mileage lookup or the benchmark itself. Do not apply independent flat percentage or currency deductions.
-
-### 3. Model positioning is more actionable than brand averages
-
-Differences between brands appear clearly in this dataset, but they are too broad for pricing individual vehicles. Mercedes-Benz has a conditional price index of approximately **132** against a portfolio reference of 100, while Vauxhall sits at **74**. Selected model indices range much more widely.
-
-![Manufacturer and selected model conditional price indices](model_vs_brand_positioning.png)
-
-A blanket brand adjustment would obscure differences between models that are often larger than the gaps between brand averages.
-
-**What to do:** anchor pricing at the manufacturer and model level. Use brand indices for portfolio positioning, not as adjustments for individual vehicles.
-
-## How it works in practice: three tiers
-
-Not every vehicle receives the same level of confidence. The benchmark routes each listing to an appropriate level of human involvement.
+The benchmark should not be trusted equally for every car. The analysis therefore separates the portfolio into three groups.
 
 ![Share of listings and listed price value by guidance tier](guidance_tiers.png)
 
-| Tier | Portfolio sizing | What it covers | What the team receives |
-|---|---|---|---|
-| **Standard guidance** | 79.00% of listings; 80.32% of listed price value | Up to 5 years old; under 60,000 miles; supported model and fuel category; complete required inputs; predicted benchmark below £50,000 | Expected advertised price, pooled 90% empirical uncertainty range and comparable cross check; analyst confirms the final price |
-| **Cautious review** | 17.56% of listings; 14.43% of listed price value | Age from 6 to 10 years, mileage from 60,000 to 99,999, or thinner comparable support | Expected advertised price, wider pooled 95% uncertainty range and required analyst review |
-| **Manual appraisal** | 3.43% of listings; 5.25% of listed price value | Age 11 or older, mileage of at least 100,000, missing or unclear required inputs, unsupported electric records, or a predicted benchmark of at least £50,000 | Specialist appraisal; the benchmark is context only and no calibrated range is issued |
+| Guidance group | Share of listings | How the team should use it |
+|---|---:|---|
+| **Standard guidance** | 79.00% | Use the benchmark as the main starting point. Show a comparable estimate as a cross check. A person confirms the final price. |
+| **Cautious review** | 17.56% | Show the same information, but require a more careful analyst review because the vehicle is older, has more mileage or has fewer useful comparisons. |
+| **Manual appraisal** | 3.43% | Send the vehicle to a specialist. Use the benchmark only as background information. |
 
-Manual appraisal represents **3.43% of listings but 5.25% of aggregate listed price value**. All 1,020 vehicles with a predicted benchmark of £50,000 or more route to this tier because percentage error creates greater absolute exposure at higher prices.
+Standard guidance covers **80.32% of total listed price value**. Manual appraisal covers only **3.43% of listings**, but **5.25% of listed price value**.
 
-The globally calibrated ranges are:
+That difference is deliberate. Every vehicle with an estimated benchmark price of at least £50,000 is sent to manual appraisal because even a small percentage error can create a large difference in pounds.
 
-* **Tier 1 operating range:** pooled 90% empirical range, from 0.82× to 1.21× the point estimate. For a £15,000 estimate, this is approximately **£12,300 to £18,200**.
-* **Tier 2 review range:** the wider pooled 95% empirical range, from 0.79× to 1.26×. For a £15,000 estimate, this is approximately **£11,800 to £18,900**.
+Manual appraisal also includes:
 
-These ranges describe historical benchmark error. They are not recommended pricing corridors, and global coverage does not guarantee the same coverage within every segment.
+* Vehicles that are 11 years or older
+* Vehicles with at least 100,000 miles
+* Vehicles with missing or unclear information
+* Electric vehicles, because the dataset contains too few of them
 
-## What this analysis cannot tell you
+This routing system is the main business recommendation. It gives routine cars a consistent starting point and concentrates expert attention on the vehicles where mistakes are more likely or more expensive.
 
-These boundaries define how far the benchmark should be trusted:
+## What the pricing team should do for each new vehicle
 
-* It uses **advertised prices**, not sale prices. It estimates what a vehicle would be listed at, not what it will sell for.
-* It cannot establish overpricing or underpricing. A large gap may reflect condition, trim, options, history, geography or other information absent from the data. Treat every gap as a review prompt, never a verdict.
-* It cannot identify a price that maximises profit because acquisition cost, preparation cost, margin and demand are unavailable.
-* It cannot predict whether or how quickly a vehicle will sell.
-* The £742 reduction in MAE is a reduction in benchmark error, not money saved.
-* All reported relationships are associations in this dataset, not causal depreciation or customer willingness to pay.
-* Results describe this historical UK listings dataset and its nine manufacturers. Exact listing dates are unavailable; vehicle age calculations assume 2020 as the reference year.
+1. Record the vehicle model, year, mileage, engine size, fuel type and transmission.
+2. Produce the benchmark estimate.
+3. Produce a separate comparable price estimate.
+4. Assign the vehicle to standard guidance, cautious review or manual appraisal.
+5. Let the pricing analyst choose the final asking price.
+6. If the analyst disagrees with the benchmark, record the size and reason for the difference.
 
-## What happens next
+Common reasons for disagreement may include trim, condition, optional equipment, accident history, service history, local demand, margin targets, stock strategy or incorrect data.
 
-### Stage 1: Shadow mode
+The override record is important. It captures business information that is missing from the original dataset and shows where the benchmark needs improvement.
 
-Produce guidance without changing live prices. Analysts price as normal and record whether they accepted or overrode the benchmark, by how much and why: trim, condition, options, history, local market, margin, stock strategy or data error.
+## Three pricing rules supported by the analysis
 
-The override log converts missing commercial information into structured data instead of treating every residual as mispricing.
+These rules are not new discoveries for an experienced pricing manager. Their value is that the analysis measures them and builds them into a consistent process.
 
-### Stage 2: Live advisory
+### Rule 1: compare like with like
 
-Move from shadow mode only when:
+The raw median diesel listing is about **£5,000 more expensive** than the raw median petrol listing. This could easily be mistaken for a diesel premium.
 
-1. Every vehicle routes correctly and outputs are traceable.
-2. Tier shares and input data quality are stable.
-3. Override rates settle and map to known business reasons.
-4. No segment shows persistent overrides in one direction without explanation or remediation.
+After comparing similar vehicles with the same recorded model, age, mileage, engine size and transmission, diesel is instead associated with a **6.59% lower advertised price** than petrol.
 
-These are process and trust criteria, not evidence that the benchmark improves commercial outcomes.
+![Raw fuel medians compared with like for like fuel relationships](diesel_reversal.png)
 
-### Stage 3: Commercial validation
+The raw difference is mainly caused by the mix of vehicles. Diesel listings include more large and expensive models.
 
-Begin collecting, in priority order:
+**Practical rule:** do not create pricing adjustments from raw averages. Compare vehicles with similar features.
 
-1. Final sale price, sale status, listing date and sale date.
-2. Trim, condition, service history and accident history.
-3. Acquisition and preparation costs.
-4. Enquiries and leads.
+The 6.59% result should not be used as a fixed diesel discount in a live business. It describes this historical dataset and would need to be checked again using current company data.
 
-Only with those outcomes can the benchmark progress from a consistent advertised price reference to a tool tested against sales, demand and margin.
+### Rule 2: consider age and mileage together
+
+A simple rule such as “subtract the same amount for every year and every 10,000 miles” is too crude. The price difference changes as cars become older and accumulate more mileage.
+
+![Supported age and mileage advertised price index](age_mileage_price_index.png)
+
+The reference vehicle in the chart is one year old with 10,000 miles and has an index of 100. A vehicle that is five years old with 60,000 miles has an index of about 54 after the other recorded features are held constant.
+
+Blank cells have too few similar vehicles to support a standalone answer. Dashed cells have limited evidence and should be treated cautiously.
+
+**Practical rule:** use the combined age and mileage estimate for common vehicle combinations. Send unusual combinations for additional review.
+
+### Rule 3: start with the vehicle model, not only the brand
+
+Brand level differences exist, but they are too broad for pricing an individual car. Mercedes-Benz has an adjusted index of about 132 against a portfolio reference of 100, while Vauxhall has an index of about 74. Individual vehicle models vary much more widely.
+
+![Manufacturer and selected model conditional price indices](model_vs_brand_positioning.png)
+
+An index of 132 means the adjusted advertised price is about 32% above the portfolio reference. It is not a markup to add to a car.
+
+**Practical rule:** start with the manufacturer and exact vehicle model. Use the wider brand only when there are too few useful comparisons for the model.
+
+## The price range is a warning, not a menu
+
+For routine vehicles, the benchmark can show a range based on its historical errors.
+
+For example, when the central estimate is £15,000:
+
+* The standard 90% historical range is approximately **£12,300 to £18,200**.
+* The wider 95% review range is approximately **£11,800 to £18,900**.
+
+The team should not select any convenient price inside this range. The range only shows how uncertain the benchmark has been in the past. A wider range means more judgement is required.
+
+Manual appraisal vehicles should not receive a calibrated benchmark range.
+
+## What this project cannot answer
+
+The source contains advertised prices, not completed sales. It does not include enough information to answer several important commercial questions.
+
+This project cannot tell the business:
+
+* What price the customer will finally pay
+* Whether a vehicle will sell quickly
+* Which price will produce the highest profit
+* Whether a benchmark gap proves overpricing or underpricing
+* How condition, trim, optional equipment or accident history changes the price
+* Whether the same relationships still hold in the current market
+
+The data are historical and vehicle age assumes 2020 as the reference year. The results should not be used directly for live pricing today.
+
+## A practical shadow pilot
+
+The business should begin with a shadow pilot. During this period, the benchmark produces information but does not change any real asking price.
+
+### Pricing manager
+
+* Own the pilot and approve any movement toward live use.
+* Review whether the three guidance groups remain sensible.
+* Investigate segments where analysts repeatedly disagree with the benchmark in the same direction.
+
+### Pricing analysts
+
+* Continue pricing vehicles normally.
+* Record whether they agree with the benchmark.
+* Record the final chosen price and any reason for overriding the benchmark.
+
+### Operations team
+
+* Make sure required vehicle information is complete and entered consistently.
+* Track missing fields and data corrections.
+
+### Data and analytics team
+
+* Monitor error, missing information, routing and override patterns.
+* Report results separately for vehicle model, age, mileage and price level.
+* Correct persistent problems or move weak segments to a higher review group.
+
+## When the pilot can move forward
+
+The benchmark should move from shadow mode to live advisory use only when:
+
+1. Every vehicle is routed to the correct guidance group.
+2. The required vehicle information is consistently available.
+3. Analysts understand the output and the uncertainty range.
+4. Override reasons are recorded and can be explained.
+5. No important group shows a repeated pricing difference in one direction without investigation.
+
+Even then, live use should begin with standard guidance vehicles only. Cautious vehicles should continue to require review, and manual appraisal vehicles should remain with specialists.
+
+These conditions show that the process is stable. They do not prove that the benchmark improves sales or profit.
+
+## Data the business should collect next
+
+To test commercial value, the business would need:
+
+1. Final sale price
+2. Sale status
+3. Listing date and sale date
+4. Price changes
+5. Vehicle condition, trim and optional equipment
+6. Service and accident history
+7. Acquisition and preparation costs
+8. Customer enquiries and leads
+
+With this information, the business could test whether benchmark supported pricing improves sale speed, margin or another agreed commercial goal.
 
 ## Bottom line
 
-Used car advertised price positioning is shaped jointly by manufacturer, model, age and mileage, with systematic conditional differences by fuel type, transmission and reported engine size. The transparent benchmark materially outperforms a strong comparable price hierarchy and can provide standard guidance, reviewed by a person, for 79% of the analytical portfolio.
+This project does not discover a new rule of used car pricing. Its useful contribution is a clearer pricing process.
 
-It does not establish market value, optimal price, demand or expected time to sale. Unusual, older, high mileage and high value vehicles still require expert judgement.
+It provides a more consistent starting estimate for routine vehicles, directs experienced people toward the difficult vehicles and creates a record of why human judgement differs from the data.
+
+The realistic recommendation is:
+
+> **Use the benchmark as a second opinion in a controlled shadow pilot. Do not use it as an automatic pricing system or as proof that a vehicle is mispriced.**
 
 ## Repository contents
 
 | File | Purpose |
 |---|---|
-| `README.md` | Business recommendation and executive findings |
+| `README.md` | Business recommendation and operating plan |
 | `METHODOLOGY_AND_DATA_AUDIT.md` | Data provenance, cleaning, statistical design and validation |
 | `images/` | Final chart PNGs |
 
@@ -165,4 +235,4 @@ It does not establish market value, optimal price, demand or expected time to sa
 
 [Kaggle: 100,000 UK Used Car Data Set](https://www.kaggle.com/datasets/adityadesai13/used-car-dataset-ford-and-mercedes). The source describes used car listings collected from the British market through web scraping.
 
-This is an independent portfolio case study. It is not affiliated with or endorsed by Kaggle, a dealer, marketplace, lender or insurer, and it is not a recommendation for live pricing. The source data are not included in this repository; follow the dataset owner’s licensing and access terms.
+This is an independent portfolio case study. It is not affiliated with or endorsed by Kaggle, a dealer, marketplace, lender or insurer. The source data are not included in this repository; follow the dataset owner’s licensing and access terms.
