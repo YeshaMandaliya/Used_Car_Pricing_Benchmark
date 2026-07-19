@@ -19,7 +19,7 @@ The business needs a consistent starting point that answers two questions:
 
 ## The recommendation
 
-**Pilot a transparent advertised price benchmark in shadow mode.**
+**Pilot a transparent advertised-price benchmark in shadow mode.**
 
 The benchmark estimates what vehicles with similar recorded features are usually advertised for. It considers:
 
@@ -50,6 +50,8 @@ The benchmark was tested on **19,433 listings that were not used to build it**. 
 In simple terms, the benchmark gave estimates that were closer to the observed advertised prices than the comparable price method.
 
 The £742 difference in average error is **not money saved**. It only shows that the benchmark estimate was closer to the listed price in this historical dataset.
+
+The benchmark also leaned slightly high. Its median signed percentage error was **+1.03%**, which means estimates tended to sit slightly above observed listed prices. For listings below £10,000, the corresponding figure was **+4.67%**. This is another reason to test the benchmark in shadow mode rather than applying its estimate automatically.
 
 ## The most useful result: decide where people should spend their time
 
@@ -101,10 +103,10 @@ If a vehicle meets rules from more than one group, the group requiring more revi
 
 For example:
 
-* A three year old car with 120,000 miles goes to manual appraisal because of its mileage.
-* A seven year old car with 30,000 miles goes to cautious review because of its age.
-* A two year old car with 20,000 miles and an expected price of £60,000 goes to manual appraisal because of its expected price.
-* A four year old car with 35,000 miles, complete information and strong model support receives standard guidance.
+* A three-year-old car with 120,000 miles goes to manual appraisal because of its mileage.
+* A seven-year-old car with 30,000 miles goes to cautious review because of its age.
+* A two-year-old car with 20,000 miles and an expected price of £60,000 goes to manual appraisal because of its expected price.
+* A four-year-old car with 35,000 miles, complete information and strong model support receives standard guidance.
 
 ### How each group is used during shadow mode
 
@@ -113,6 +115,8 @@ For example:
 | **Standard guidance** | 79.00% | Show the benchmark beside the analyst’s normal price. Do not change the real asking price. Record whether the analyst agrees. |
 | **Cautious review** | 17.56% | Show the benchmark, flag the vehicle for closer review and record the analyst’s decision and reason. |
 | **Manual appraisal** | 3.43% | Send the vehicle to a specialist. Use the benchmark only as background information. |
+
+The three displayed shares add to 99.99% because each percentage is rounded separately. The underlying record counts cover all 97,673 listings.
 
 The percentages come from applying these rules to the 97,673 historical listings. A real dealer’s portfolio may have a different mix.
 
@@ -147,7 +151,7 @@ The raw median diesel listing is about **£5,000 more expensive** than the raw m
 
 When the analysis accounts for vehicle model, age, mileage, engine size and transmission, diesel is instead associated with a **6.59% lower advertised price** than petrol.
 
-![Raw fuel medians compared with like for like fuel relationships](diesel_reversal.png)
+![Raw fuel medians compared with like-for-like fuel relationships](diesel_reversal.png)
 
 The raw difference is mainly caused by the mix of vehicles. Diesel listings include more large and expensive models.
 
@@ -161,7 +165,7 @@ A simple rule such as “subtract the same amount for every year and every 10,00
 
 ![Supported age and mileage advertised price index](age_mileage_price_index.png)
 
-The reference vehicle in the chart is one year old with 10,000 miles and has an index of 100. A vehicle that is five years old with 60,000 miles has an index of about 54 after the other recorded features are held constant.
+The reference is a one-year-old vehicle with 10,000 miles and has an index of 100. A five-year-old vehicle with 60,000 miles has an index of about 54 after the other recorded features are held constant.
 
 Blank cells have too few similar vehicles to support a standalone answer. Dashed cells have limited evidence and should be treated cautiously.
 
@@ -169,7 +173,7 @@ Blank cells have too few similar vehicles to support a standalone answer. Dashed
 
 ### Rule 3: start with the vehicle model, not only the brand
 
-Brand level differences exist, but they are too broad for pricing an individual car. Mercedes-Benz has an adjusted index of about 132 against a portfolio reference of 100, while Vauxhall has an index of about 74. Individual vehicle models vary much more widely.
+Brand-level differences exist, but they are too broad for pricing an individual car. Mercedes-Benz has an adjusted index of about 132 against a portfolio reference of 100, while Vauxhall has an index of about 74. Individual vehicle models vary much more widely.
 
 ![Manufacturer and selected model conditional price indices](model_vs_brand_positioning.png)
 
@@ -259,7 +263,7 @@ To test commercial value, the business would need:
 7. Acquisition and preparation costs
 8. Customer enquiries and leads
 
-With this information, the business could test whether benchmark supported pricing improves sale speed, margin or another agreed commercial goal.
+With this information, the business could test whether benchmark-supported pricing improves sale speed, margin or another agreed commercial goal.
 
 ## Bottom line
 
